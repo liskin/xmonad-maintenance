@@ -1,0 +1,62 @@
+name: Update sponsors
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Run every day
+    - cron: '0 2 * * *'
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone project
+        uses: actions/checkout@v2
+        with:
+          repository: xmonad/xmonad-web
+          token: ${{ secrets.ADMIN_GITHUB_TOKEN }}
+
+      - name: Refresh sponsors
+        run: |
+          set -ex
+
+          # check that we're running the code we expect to be running
+          sha256sum --check <<<"53a4f58196edc76fa3e8389158460948fcfb2b80cb2e0142f2199885560a8a4d _sponsors.sh"
+          sha256sum --check <<<"336e402e1a9734b2c469f175dce90f72287d55624aef7f75e525aa1640dba79b Makefile"
+
+          make -B -f Makefile _data/sponsors-named.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ADMIN_GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
+
+      - name: If changed, commit, push, create (or update) PR
+        run: |
+          set -ex
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+          # exit if no changes against the default branch
+          git diff --quiet --exit-code && exit
+
+          # exit if there's already a sponsors-update branch with the same sponsors data
+          if git fetch origin sponsors-update; then
+            git diff --quiet --exit-code FETCH_HEAD -- _data/sponsors-named.json && exit
+          fi
+
+          git checkout -b sponsors-update
+          git commit -a -m 'data: Update sponsors'
+          git push -f -u origin sponsors-update:sponsors-update
+
+          # open pull request if there isn't one already
+          err=$(
+            GITHUB_TOKEN="${ADMIN_GITHUB_TOKEN:?}" gh pr create \
+              --title='data: Update sponsors' \
+              --body='(automatic PR by https://github.com/liskin/xmonad-web-sponsors)' \
+              2>&1
+          ) && ret=$? || ret=$?
+          if (( ret )) && [[ "$err" != *"a pull request for branch"*"already exists:"* ]]; then
+            exit $?
+          fi
+        env:
+          ADMIN_GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}

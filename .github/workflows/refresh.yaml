@@ -21,7 +21,7 @@ jobs:
           set -ex
 
           # check that we're running the code we expect to be running
-          sha256sum --check <<<"53a4f58196edc76fa3e8389158460948fcfb2b80cb2e0142f2199885560a8a4d _sponsors.sh"
+          sha256sum --check <<<"325d5bb06d6f8f3be13863e019d3754b60467f007336a0e8e8f8daf5225f8684 _sponsors.sh"
           sha256sum --check <<<"483d1e73f336088bb1c58e3226bd61c9f89722daf76b25df49254964bb0e2140 Makefile"
 
           make -B -f Makefile _data/sponsors-named.json

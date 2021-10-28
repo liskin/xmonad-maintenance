@@ -22,7 +22,7 @@ jobs:
 
           # check that we're running the code we expect to be running
           sha256sum --check <<<"53a4f58196edc76fa3e8389158460948fcfb2b80cb2e0142f2199885560a8a4d _sponsors.sh"
-          sha256sum --check <<<"336e402e1a9734b2c469f175dce90f72287d55624aef7f75e525aa1640dba79b Makefile"
+          sha256sum --check <<<"483d1e73f336088bb1c58e3226bd61c9f89722daf76b25df49254964bb0e2140 Makefile"
 
           make -B -f Makefile _data/sponsors-named.json
         env:

@@ -1,4 +1,4 @@
-name: Update sponsors
+name: 'xmonad-web: Update sponsors'
 
 on:
   workflow_dispatch:
@@ -52,7 +52,7 @@ jobs:
           err=$(
             GITHUB_TOKEN="${ADMIN_GITHUB_TOKEN:?}" gh pr create \
               --title='data: Update sponsors' \
-              --body='(automatic PR by https://github.com/liskin/xmonad-web-sponsors)' \
+              --body='(automatic PR by https://github.com/liskin/xmonad-maintenance)' \
               2>&1
           ) && ret=$? || ret=$?
           if (( ret )) && [[ "$err" != *"a pull request for branch"*"already exists:"* ]]; then
@@ -68,4 +68,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh api -X PUT repos/${{ github.repository }}/actions/workflows/refresh.yaml/enable
+          gh api -X PUT repos/${{ github.repository }}/actions/workflows/xmonad-web-sponsors.yaml/enable

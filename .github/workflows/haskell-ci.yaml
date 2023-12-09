@@ -104,9 +104,9 @@ jobs:
         run: |
           set -ex
 
-          # exit if there were no changes
+          # exit if there were no changes or if only YAML comments changed
           git remote set-head --auto origin
-          git diff --quiet --exit-code origin/HEAD && exit
+          git diff --quiet --exit-code --ignore-matching-lines='^#' origin/HEAD && exit
 
           # exit if there's already a haskell-ci-update branch with the same contents
           if git fetch origin haskell-ci-update; then

@@ -50,8 +50,9 @@ jobs:
         with:
           ghc-version: 9.4
 
-      - name: Cache cabal store
-        uses: actions/cache@v3
+      - name: Restore cached cabal store
+        id: cache-cabal
+        uses: actions/cache/restore@v3
         with:
           path: ${{ steps.setup.outputs.cabal-store }}
           key: cabal-store-${{ runner.os }}-ghc-${{ steps.setup.outputs.ghc-version }}-cabal-${{ steps.setup.outputs.cabal-version }}-haskell-ci-${{ steps.haskell-ci-version.outputs.version }}
@@ -62,6 +63,12 @@ jobs:
         working-directory: haskell-ci
         run: |
           cabal install
+
+      - name: Cache cabal store
+        uses: actions/cache/save@v3
+        with:
+          path: ${{ steps.setup.outputs.cabal-store }}
+          key: ${{ steps.cache-cabal.outputs.cache-primary-key }}
 
       - name: Set up git user name/email
         run: |

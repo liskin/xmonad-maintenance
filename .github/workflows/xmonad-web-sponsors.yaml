@@ -57,6 +57,8 @@ jobs:
           ) && ret=$? || ret=$?
           if (( ret )) && [[ "$err" != *"a pull request for branch"*"already exists:"* ]]; then
             exit $?
+          else
+            printf '%s\n' "$err" >> $GITHUB_STEP_SUMMARY
           fi
         env:
           ADMIN_GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}

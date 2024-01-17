@@ -70,9 +70,12 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
-      - name: Create branch
+      - name: Prepare git stuff
         working-directory: project
         run: |
+          set -ex
+
+          git remote set-head --auto origin
           git checkout -b haskell-ci-update
 
       - name: Update tested-with
@@ -101,7 +104,6 @@ jobs:
           set -ex
 
           # exit if there were no changes or if only YAML comments changed
-          git remote set-head --auto origin
           git diff --quiet --exit-code --ignore-matching-lines='^#' origin/HEAD && exit
 
           # exit if there's already a haskell-ci-update branch with the same contents
@@ -123,6 +125,21 @@ jobs:
           fi
         env:
           ADMIN_GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
+
+      - name: Export changes bundle
+        if: |
+          !cancelled()
+        working-directory: project
+        run: |
+          git bundle create changes.bundle origin/HEAD..
+
+      - name: Publish changes bundle as artifact
+        if: |
+          !cancelled()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.repo }}
+          path: project/changes.bundle
 
   workflow-keepalive:
     runs-on: ubuntu-latest

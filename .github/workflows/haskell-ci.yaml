@@ -52,7 +52,7 @@ jobs:
 
       - name: Restore cached cabal store
         id: cache-cabal
-        uses: actions/cache/restore@v3
+        uses: actions/cache/restore@v4
         with:
           path: ${{ steps.setup.outputs.cabal-store }}
           key: cabal-store-${{ runner.os }}-ghc-${{ steps.setup.outputs.ghc-version }}-cabal-${{ steps.setup.outputs.cabal-version }}-haskell-ci-${{ steps.haskell-ci-version.outputs.version }}
@@ -65,7 +65,7 @@ jobs:
           cabal install
 
       - name: Cache cabal store
-        uses: actions/cache/save@v3
+        uses: actions/cache/save@v4
         with:
           path: ${{ steps.setup.outputs.cabal-store }}
           key: ${{ steps.cache-cabal.outputs.cache-primary-key }}

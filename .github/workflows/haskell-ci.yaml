@@ -141,7 +141,7 @@ jobs:
           !cancelled()
         working-directory: project
         run: |
-          git bundle create changes.bundle origin/HEAD..
+          git diff --quiet --exit-code origin/HEAD || git bundle create changes.bundle origin/HEAD..
 
       - name: Publish changes bundle as artifact
         if: |

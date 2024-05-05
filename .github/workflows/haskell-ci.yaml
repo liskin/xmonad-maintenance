@@ -101,7 +101,7 @@ jobs:
           set -ex
 
           ../maint/patch-haskell-ci-hackage.sh
-          haskell-ci regenerate
+          ../maint/haskell-ci-regenerate.sh
 
           # commit if anything changed
           git diff --quiet --exit-code || git commit -a -m 'ci: Regenerate haskell-ci'

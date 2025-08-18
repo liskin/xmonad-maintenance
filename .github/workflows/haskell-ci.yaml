@@ -21,19 +21,19 @@ jobs:
 
     steps:
       - name: Clone xmonad-maintenance
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: maint
 
       - name: Clone project
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: xmonad/${{ matrix.repo }}
           path: project
           token: ${{ secrets.ADMIN_GITHUB_TOKEN }}
 
       - name: Clone haskell-ci
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: haskell-CI/haskell-ci
           path: haskell-ci

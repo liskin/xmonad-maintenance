@@ -69,7 +69,7 @@ jobs:
       - name: Install haskell-ci
         working-directory: haskell-ci
         run: |
-          cabal install
+          cabal install -j
 
       - name: Cache cabal store
         uses: actions/cache/save@v4

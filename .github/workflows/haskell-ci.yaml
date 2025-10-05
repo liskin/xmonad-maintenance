@@ -55,7 +55,7 @@ jobs:
         id: setup
         uses: haskell-actions/setup@v2
         with:
-          ghc-version: 9.4
+          ghc-version: 9.12
 
       - name: Restore cached cabal store
         id: cache-cabal

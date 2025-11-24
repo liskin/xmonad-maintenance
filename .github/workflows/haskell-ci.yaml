@@ -26,12 +26,12 @@ jobs:
 
     steps:
       - name: Clone xmonad-maintenance
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: maint
 
       - name: Clone project
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: xmonad/${{ matrix.repo }}
           ref: ${{ github.event.inputs.branch }}
@@ -40,7 +40,7 @@ jobs:
           fetch-depth: 0
 
       - name: Clone haskell-ci
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: haskell-CI/haskell-ci
           path: haskell-ci

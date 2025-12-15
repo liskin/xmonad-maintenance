@@ -153,7 +153,7 @@ jobs:
       - name: Publish changes bundle as artifact
         if: |
           !cancelled()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.repo }}
           path: project/changes.bundle

@@ -122,7 +122,7 @@ jobs:
           git diff --quiet --exit-code --ignore-matching-lines='^#' origin/HEAD && exit
 
           # exit if the only changes are version downgrades of used GitHub Actions
-          ../maint/is-only-gha-version-downgrades.sh && exit
+          ../maint/is-only-gha-version-downgrades.sh origin/HEAD && exit
 
           # exit if there's already a haskell-ci-update branch with the same contents
           if git fetch origin haskell-ci-update; then
